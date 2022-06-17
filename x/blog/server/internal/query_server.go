@@ -49,6 +49,7 @@ func NewFetchAllComments(cdc unmarshaller, iteratorFactory func(ctx context.Cont
 
 		var comments []*blog.Comment
 		// TODO: There's got to be a more efficient way to search by post_slug vs. iterating through everything.
+		// TODO: Support pagination.
 		for ; iterator.Valid(); iterator.Next() {
 			var comment blog.Comment
 			if err := cdc.Unmarshal(iterator.Value(), &comment); err != nil {

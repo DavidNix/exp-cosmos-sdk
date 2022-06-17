@@ -95,19 +95,7 @@ func TestServer_CreateComment(t *testing.T) {
 		require.Empty(t, store.Saved)
 	})
 
-	t.Run("missing required data", func(t *testing.T) {
-		var cdc mockCodec
-		srv := NewServer(&cdc, testStoreKey)
-		store := mockStore{StubHas: true}
-		srv.storeFactory = func(ctx context.Context, prefix []byte) storer {
-			return &store
-		}
-		_, err := srv.CreateComment(ctx, &blog.MsgCreateComment{}) // empty request
-		require.Error(t, err)
-		require.ErrorIs(t, err, sdkerrors.ErrInvalidRequest)
-		require.EqualError(t, err, "post slug missing; author missing; body missing: invalid request")
-
-		require.Nil(t, cdc.GotProtoMarshaler)
-		require.Empty(t, store.Saved)
+	t.Run("author account does not exist", func(t *testing.T) {
+		t.Skip("TODO - validate author has an account on chain to prevent comment spam")
 	})
 }
