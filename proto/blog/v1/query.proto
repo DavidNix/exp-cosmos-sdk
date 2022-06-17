@@ -24,6 +24,8 @@ message QueryAllPostsResponse {
 
 message QueryAllCommentsRequest {
   string post_slug = 1;
+
+  cosmos.base.query.v1beta1.PageRequest pagination = 2;
 }
 
 message QueryAllCommentsResponse {
