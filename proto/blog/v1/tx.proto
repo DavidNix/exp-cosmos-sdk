@@ -26,4 +26,7 @@ message MsgCreateComment {
   string body = 3;
 }
 
-message MsgCreateCommentResponse {}
+message MsgCreateCommentResponse {
+  // Hash is the sha256 of post_slug + author + body and is used as the key to save in the store.
+  string hash = 1;
+}

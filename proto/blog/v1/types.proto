@@ -11,3 +11,11 @@ message Post {
   string title = 3;
   string body = 4;
 }
+
+// TODO: Timestamp so we can order comments.
+// TODO: Or sequence, monotonically increasing id.
+message Comment {
+  string post_slug = 1; // associated post
+  string author = 2;
+  string body = 3;
+}
