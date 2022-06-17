@@ -1,4 +1,4 @@
-package server
+package internal
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"github.com/regen-network/bec/x/blog"
 )
 
-var _ blog.QueryServer = serverImpl{}
+var _ blog.QueryServer = Server{}
 
-func (s serverImpl) AllPosts(goCtx context.Context, request *blog.QueryAllPostsRequest) (*blog.QueryAllPostsResponse, error) {
+func (s Server) AllPosts(goCtx context.Context, request *blog.QueryAllPostsRequest) (*blog.QueryAllPostsResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	store := ctx.KVStore(s.storeKey)

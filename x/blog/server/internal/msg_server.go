@@ -1,4 +1,4 @@
-package server
+package internal
 
 import (
 	"context"
@@ -10,9 +10,9 @@ import (
 	"github.com/regen-network/bec/x/blog"
 )
 
-var _ blog.MsgServer = serverImpl{}
+var _ blog.MsgServer = Server{}
 
-func (s serverImpl) CreatePost(goCtx context.Context, request *blog.MsgCreatePost) (*blog.MsgCreatePostResponse, error) {
+func (s Server) CreatePost(goCtx context.Context, request *blog.MsgCreatePost) (*blog.MsgCreatePostResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	store := prefix.NewStore(ctx.KVStore(s.storeKey), blog.KeyPrefix(blog.PostKey))
@@ -37,4 +37,9 @@ func (s serverImpl) CreatePost(goCtx context.Context, request *blog.MsgCreatePos
 	store.Set(key, bz)
 
 	return &blog.MsgCreatePostResponse{}, nil
+}
+
+func (s Server) CreateComment(ctx context.Context, comment *blog.MsgCreateComment) (*blog.MsgCreateCommentResponse, error) {
+	//TODO implement me
+	panic("implement me")
 }
