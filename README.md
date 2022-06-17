@@ -1,3 +1,9 @@
+# To Boostrap and Run a Node
+
+```shell
+./scripts/start-test-node.sh
+```
+
 # Blockchain Engineer Challenge
 
 This challenge consists of adding a new `commenting` functionality to `x/blog`, a demo Cosmos SDK module that can be used to run a decentralized blog.
