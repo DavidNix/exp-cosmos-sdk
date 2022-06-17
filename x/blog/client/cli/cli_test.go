@@ -1,6 +1,7 @@
 package cli_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -184,4 +185,60 @@ func (s *IntegrationTestSuite) TestAllPosts() {
 
 func TestKeeperTestSuite(t *testing.T) {
 	suite.Run(t, new(IntegrationTestSuite))
+}
+
+func (s *IntegrationTestSuite) TestComments() {
+	val0 := s.network.Validators[0]
+
+	args := []string{
+		val0.Address.String(), "slug", "title", "body",
+		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
+		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
+		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(10))).String()),
+	}
+	cmd := cli.CmdCreatePost()
+
+	out, err := clitestutil.ExecTestCLICmd(val0.ClientCtx, cmd, args)
+	s.Require().NoError(err)
+	var txRes sdk.TxResponse
+	err = val0.ClientCtx.Codec.UnmarshalJSON(out.Bytes(), &txRes)
+	s.Require().NoError(err)
+	s.Require().Equal(uint32(0), txRes.Code)
+
+	cmd = cli.CmdCreateComment()
+	args = []string{
+		val0.Address.String(),
+		"slug",
+		"comment body",
+		fmt.Sprintf("--%s=true", flags.FlagSkipConfirmation),
+		fmt.Sprintf("--%s=%s", flags.FlagBroadcastMode, flags.BroadcastBlock),
+		fmt.Sprintf("--%s=%s", flags.FlagFees, sdk.NewCoins(sdk.NewCoin(s.cfg.BondDenom, sdk.NewInt(10))).String()),
+	}
+	_, err = clitestutil.ExecTestCLICmd(val0.ClientCtx, cmd, args)
+	s.Require().NoError(err)
+
+	cmd = cli.CmdAllComments()
+	args = []string{
+		"slug",
+		"-o=json",
+	}
+
+	out, err = clitestutil.ExecTestCLICmd(val0.ClientCtx, cmd, args)
+	s.Require().NoError(err)
+
+	var want struct {
+		Comments []struct {
+			PostSlug string `json:"post_slug"`
+			Author   string
+			Body     string
+		}
+	}
+	err = json.Unmarshal(out.Bytes(), &want)
+	s.Require().NoError(err)
+
+	s.Require().Len(want.Comments, 1)
+	comment := want.Comments[0]
+	s.Require().Equal(val0.Address.String(), comment.Author)
+	s.Require().Equal("slug", comment.PostSlug)
+	s.Require().Equal("comment body", comment.Body)
 }
