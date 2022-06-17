@@ -13,7 +13,8 @@ message Post {
 }
 
 // TODO: Timestamp so we can order comments.
-// TODO: Or sequence, monotonically increasing id.
+// TODO: Or sequence, monotonically increasing id to prevent duplicate comments.
+// TODO: Or simply disallow dupe comments.
 message Comment {
   string post_slug = 1; // associated post
   string author = 2;
