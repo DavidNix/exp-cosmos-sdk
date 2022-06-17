@@ -1,12 +1,13 @@
 package blog
 
 const (
-	ModuleName = "blog"
-	StoreKey   = ModuleName
+    ModuleName = "blog"
+    StoreKey   = ModuleName
 
-	PostKey = "post"
+    PostKey    = "post"
+    CommentKey = "comment"
 )
 
 func KeyPrefix(p string) []byte {
-	return []byte(p)
+    return []byte(p)
 }
