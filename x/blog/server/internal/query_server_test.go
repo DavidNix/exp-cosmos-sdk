@@ -19,11 +19,6 @@ type mockIterator struct {
 	DidClose bool
 }
 
-func newIterator() *mockIterator {
-	// Start at -1 because Next() advances idx on each call and Valid is called first.
-	return &mockIterator{idx: -1}
-}
-
 func (m *mockIterator) Domain() (start []byte, end []byte) {
 	panic("implement me")
 }
