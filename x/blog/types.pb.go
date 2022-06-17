@@ -93,7 +93,8 @@ func (m *Post) GetBody() string {
 }
 
 // TODO: Timestamp so we can order comments.
-// TODO: Or sequence, monotonically increasing id.
+// TODO: Or sequence, monotonically increasing id to prevent duplicate comments.
+// TODO: Or simply disallow dupe comments.
 type Comment struct {
 	PostSlug string `protobuf:"bytes,1,opt,name=post_slug,json=postSlug,proto3" json:"post_slug,omitempty"`
 	Author   string `protobuf:"bytes,2,opt,name=author,proto3" json:"author,omitempty"`
